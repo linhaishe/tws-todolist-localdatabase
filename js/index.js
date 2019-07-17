@@ -2,6 +2,7 @@
 
 var todoc = 0;
 var donec = 0;
+var allc = 0;
 
 var todolist = document.getElementById('todolist');
 var donelist = document.getElementById('donelist');
@@ -25,9 +26,11 @@ function postaction() {
         }else {
             todolist.insertBefore(li,todolist.children[0]);
         }
+
         var testTitle = document.getElementsByClassName('title')[0];
         testTitle.value = title.value;
 
+        //loop()作用是什么？？？？
         loop('todolist');
         todoc ++;
         todocount.innerText = todoc;
@@ -52,6 +55,7 @@ function loop(str) {
 //update方法
 function update(n,str) {
     var list = null;
+    //三元操作符
     str === 'todolist' ? list = todolist : list = donelist;
 
     var li = null;
