@@ -14,25 +14,24 @@ var donecount = document.getElementById('donecount');
 //添加ToDo
 function postaction() {
     var title = document.getElementById('title');
-    if (title.value === ""){
+    if (title.value === "") {
         alert('内容不能为空！')
-    }else {
+    } else {
         var li = document.createElement('li');
         li.innerHTML = '<input type="checkbox" onchange="update();"> ' +
             '<input class="title" type="text" onchange="change();" onclick="edit();">' +
             '<a href="javascript:remove();">-</a> ';
-        if (todoc == 0){   //第一次添加元素appendChild
+        if (todoc == 0) {   //第一次添加元素appendChild
             todolist.appendChild(li);
-        }else {
-            todolist.insertBefore(li,todolist.children[0]);
+        } else {
+            todolist.insertBefore(li, todolist.children[0]);
         }
 
         var testTitle = document.getElementsByClassName('title')[0];
         testTitle.value = title.value;
 
-        //loop()作用是什么？？？？
         loop('todolist');
-        todoc ++;
+        todoc++;
         todocount.innerText = todoc;
 
         title.value = "";
@@ -40,43 +39,50 @@ function postaction() {
 }
 
 //循环，每次添加不同的i值
+//childnodes 返回节点的子节点集合,即元素子节点的相关信息
+//https://developer.mozilla.org/zh-CN/docs/Web/API/ParentNode/children
+//https://www.w3schools.com/jsref/prop_element_children.asp
+//https://www.w3schools.com/jsref/prop_node_childnodes.asp
+// children 属性为只读属性，对象类型为 HTMLCollection，你可以使用 elementNodeReference.children[1].nodeName 来获取某个子元素的标签名称。p button script
+//The difference between this property and childNodes, is that childNodes contain all nodes, including text nodes and comment nodes, while children only contain element nodes.
+//实在是没明白
 function loop(str) {
     var list = null;
     str === 'todolist' ? list = todolist : list = donelist;
     childs = list.childNodes;
-    for (var i = 0; i < childs.length;i++){
-        childs[i].children[0].setAttribute('onchange','update("'+i+'", "'+str+'")');
-        childs[i].children[1].setAttribute('onclick','edit("'+i+'", "'+str+'")');
-        childs[i].children[1].setAttribute('onchange','change("'+i+'", "'+str+'","'+childs[i].children[1].value+'")');
-        childs[i].children[2].setAttribute('href','javascript:remove("'+i+'", "'+str+'")');
+    for (var i = 0; i < childs.length; i++) {
+        childs[i].children[0].setAttribute('onchange', 'update("' + i + '", "' + str + '")');
+        childs[i].children[1].setAttribute('onclick', 'edit("' + i + '", "' + str + '")');
+        childs[i].children[1].setAttribute('onchange', 'change("' + i + '", "' + str + '","' + childs[i].children[1].value + '")');
+        childs[i].children[2].setAttribute('href', 'javascript:remove("' + i + '", "' + str + '")');
     }
 }
 
 //update方法
-function update(n,str) {
+function update(n, str) {
     var list = null;
     //三元操作符
     str === 'todolist' ? list = todolist : list = donelist;
 
     var li = null;
     childs = list.childNodes;
-    for (var i = 0; i < childs.length; i++){
-        if (i === Number(n)){
+    for (var i = 0; i < childs.length; i++) {
+        if (i === Number(n)) {
             li = childs[i]
         }
     }
-    remove(n,str); //删除原有的，得到li并刷新原有的li
+    remove(n, str); //删除原有的，得到li并刷新原有的li
 
-    if (str ==='todolist'){
-        if (donec === 0){
+    if (str === 'todolist') {
+        if (donec === 0) {
             donelist.appendChild(li);
-        }else {
-            donelist.insertBefore(li,donelist.children[0]);
+        } else {
+            donelist.insertBefore(li, donelist.children[0]);
         }
         loop('donelist');
         donec++;
         donecount.innerText = donec;
-    }else if (str === 'donelist'){
+    } else if (str === 'donelist') {
         todolist.appendChild(li);
         loop('todolist')
         todoc++;
@@ -85,26 +91,26 @@ function update(n,str) {
 }
 
 //edit 方法 编辑title
-function edit(n,str) {
+function edit(n, str) {
     var list = null;
     str === 'todolist' ? list = todolist : list = donelist;
     childs = list.childNodes;
-    for (var i = 0; i < childs.length;i++){
-        if (i === Number(n)){
+    for (var i = 0; i < childs.length; i++) {
+        if (i === Number(n)) {
             childs[i].children[1].style.border = '1px solid #ccc';
         }
     }
 }
 
 // change方法 失去焦点
-function change(n,str,oldValue) {
+function change(n, str, oldValue) {
     var list = null;
     str === 'todolist' ? list = todolist : list = donelist;
     childs = list.childNodes;
-    for (var i = 0; i < childs.length; i++){
-        if (i === Number(n)){
+    for (var i = 0; i < childs.length; i++) {
+        if (i === Number(n)) {
             childs[i].children[1].style.border = 'none';
-            if (childs[i].children[1].value === ""){
+            if (childs[i].children[1].value === "") {
                 alert('内容不能为空');
                 childs[i].children[1].value = oldValue;
             }
@@ -113,20 +119,20 @@ function change(n,str,oldValue) {
     loop(str);
 }
 //清除列表清单
-function remove(n,str) {
+function remove(n, str) {
     var list = null;
-    if (str === 'todolist'){
+    if (str === 'todolist') {
         list = todolist;
         todoc--;
         todocount.innerText = todoc;
-    }else if (str === 'donelist'){
+    } else if (str === 'donelist') {
         list = donelist;
         donec--;
-        donecount.innerText =donec;
+        donecount.innerText = donec;
     }
     childs = list.childNodes;
-    for (var i = childs.length-1;i >= 0;i--){
-        if (i === Number(n)){
+    for (var i = childs.length - 1; i >= 0; i--) {
+        if (i === Number(n)) {
             list.removeChild(childs[n]);
         }
     }
@@ -136,11 +142,11 @@ function remove(n,str) {
 
 function clear() {
     childs1 = todolist.childNodes;
-    for (var i = childs1.length-1; i >= 0 ; i--){
+    for (var i = childs1.length - 1; i >= 0; i--) {
         todolist.removeChild(childs1[i]);
     }
     childs2 = donelist.childNodes;
-    for (var j = childs2.length-1 ; j >= 0; j--){
+    for (var j = childs2.length - 1; j >= 0; j--) {
         donelist.removeChild(childs2[j]);
     }
     todoc = 0;
