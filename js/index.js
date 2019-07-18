@@ -6,9 +6,11 @@ var allc = 0;
 
 var todolist = document.getElementById('todolist');
 var donelist = document.getElementById('donelist');
+var alllist = document.getElementById('alllist');
 
 var todocount = document.getElementById('todocount');
 var donecount = document.getElementById('donecount');
+var allcount = document.getElementById('allcount');
 
 
 //添加ToDo
